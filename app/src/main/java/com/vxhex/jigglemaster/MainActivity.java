@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +23,18 @@ public class MainActivity extends AppCompatActivity {
     private float _accelerationWithoutGravity;
     private float _accelerationCurrentWithGravity;
     private float _accelerationLastWithGravity;
+
+    private final String[] _healthyBodyHealthyMind = {
+            "Way to jiggle it, cadet!",
+            "Keep on doing it!",
+            "I'm watching you jiggle and it's good!",
+            "Healthy jiggles, healthy mind!",
+            "You are hard with jiggles!",
+            "It jiggles and it looks good!",
+            "Let's keep jiggling!",
+            "Shake and muscles!",
+            "Keep mastering that jiggle!"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +68,15 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    private void jiggleUpdate() {
+        numberOfJiggles++;
+        if (numberOfJiggles % 5 == 0) {
+            int random = new Random().nextInt(_healthyBodyHealthyMind.length);
+            TextView text = (TextView)findViewById(R.id.textView1);
+            text.setText(_healthyBodyHealthyMind[random]);
+        }
+    }
+
     private final SensorEventListener mSensorListener = new SensorEventListener() {
 
         public void onSensorChanged(SensorEvent event) {
@@ -67,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             _accelerationWithoutGravity = _accelerationWithoutGravity * 0.9f + accelerationDifference;
 
             if (_accelerationWithoutGravity > JIGGLE_DELTA) {
-                numberOfJiggles++;
+                jiggleUpdate();
                 Log.d("JiggleMaster", "Way to jiggle it, cadet! " + numberOfJiggles);
             }
         }

@@ -10,7 +10,12 @@
     tools:context="com.vxhex.jigglemaster.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/black"
+        android:textSize="75dp"
+        android:textStyle="bold"
+        android:text="JIGGLE MASTER"/>
 </RelativeLayout>
