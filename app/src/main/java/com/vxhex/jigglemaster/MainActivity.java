@@ -5,7 +5,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private float _accelerationLastWithGravity;
 
     private SoundPool _soundPool;
-    private int soundID;
-    boolean loaded = false;
+    private int _soundIDs[]  = new int[5];
+    private int _soundsLoaded = 0;
 
     private final String[] _healthyBodyHealthyMind = {
             "Way to jiggle it, cadet!",
@@ -81,14 +80,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeSounds() {
         this.setVolumeControlStream(AudioManager.STREAM_MUSIC);
-        _soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC, 0);
+        _soundPool = new SoundPool(_soundIDs.length, AudioManager.STREAM_MUSIC, 0);
         _soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                loaded = true;
+                ++_soundsLoaded;
             }
         });
-        soundID = _soundPool.load(this, R.raw.sound1, 1);
+        _soundIDs[0] = _soundPool.load(this, R.raw.sound1, 1);
+        _soundIDs[1] = _soundPool.load(this, R.raw.sound2, 1);
+        _soundIDs[2] = _soundPool.load(this, R.raw.sound3, 1);
+        _soundIDs[3] = _soundPool.load(this, R.raw.sound4, 1);
+        _soundIDs[4] = _soundPool.load(this, R.raw.sound5, 1);
     }
 
     private void jiggleUpdate() {
@@ -104,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
             float actualVolume = (float) audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
             float maxVolume = (float) audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
             float volume = actualVolume / maxVolume;
-            if (loaded) {
-                _soundPool.play(soundID, volume, volume, 1, 0, 1f);
+            if (_soundsLoaded == _soundIDs.length) {
+                random = new Random().nextInt(_soundIDs.length);
+                _soundPool.play(_soundIDs[random], volume, volume, 1, 0, 1f);
             }
         }
     }
