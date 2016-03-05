@@ -67,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
             _accelerationWithoutGravity = _accelerationWithoutGravity * 0.9f + accelerationDifference;
 
             if (_accelerationWithoutGravity > JIGGLE_DELTA) {
-                Log.d("JiggleMaster", "Way to jiggle it, cadet!");
+                numberOfJiggles++;
+                Log.d("JiggleMaster", "Way to jiggle it, cadet! " + numberOfJiggles);
             }
         }
 
