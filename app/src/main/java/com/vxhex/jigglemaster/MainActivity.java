@@ -8,10 +8,13 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final float JIGGLE_DIFFERENTIAL = 13;
+    private final float JIGGLE_DELTA = 13;
+
+    private int numberOfJiggles = 0;
 
     private SensorManager _jiggleManager;
     private float _accelerationWithoutGravity;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Initialize the sensor manager
         _jiggleManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             float accelerationDifference = _accelerationCurrentWithGravity - _accelerationLastWithGravity;
             _accelerationWithoutGravity = _accelerationWithoutGravity * 0.9f + accelerationDifference;
 
-            if (_accelerationWithoutGravity > JIGGLE_DIFFERENTIAL) {
+            if (_accelerationWithoutGravity > JIGGLE_DELTA) {
                 Log.d("JiggleMaster", "Way to jiggle it, cadet!");
             }
         }
